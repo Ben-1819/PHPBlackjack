@@ -19,6 +19,10 @@ class Dealer implements Black{
         $this->decksetup = $decksetup;
     }
 
+    public function get_turn(){
+        return $this->dealersTurn;
+    }
+
     public function get_deck(){
         return $this->decksetup->get_deck();
     }
@@ -123,10 +127,10 @@ class Dealer implements Black{
             self::hit();
         }
         elseif($this->dealerScore > 21){
-            self::bust();
+            $this->dealersTurn = self::bust();
         }
         else{
-            self::stand();
+            $this->dealersTurn = self::stand();
         }
     }
 
