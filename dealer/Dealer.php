@@ -19,6 +19,16 @@ class Dealer implements Black{
         $this->decksetup = $decksetup;
     }
 
+    public function set_cards($card1, $card2){
+        $this->dealersCards = [$card1, $card2];
+        return $this->dealersCards;
+    }
+
+    public function push_card($card){
+        array_push($this->dealersCards, $card);
+        return $this->dealersCards;
+    }
+
     public function get_score(){
         $dealerInfo = self::getScore();
         $this->dealerScore = $dealerInfo[0];
@@ -121,8 +131,4 @@ class Dealer implements Black{
         }
     }
 }
-
-$dealerTest = new Dealer(new Setup);
-$dealerTest->getHand();
-$dealerTest->dealerTurn();
 ?>
