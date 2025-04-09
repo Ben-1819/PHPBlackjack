@@ -2,7 +2,11 @@
 Namespace Dealer;
 use Game\BlackjackSetup as Setup;
 use Actions\Blackjack as Black;
+use Monolog\Level;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 require __DIR__."/../vendor/autoload.php";
+require __DIR__."/../logs.log";
 
 class Dealer implements Black{
     protected $dealersCards;
@@ -10,6 +14,7 @@ class Dealer implements Black{
     protected $dealerAces;
     protected $decksetup;
     protected $dealersTurn;
+    protected $log;
 
     public function __construct(Setup $decksetup){
         $this->dealersCards = [];
@@ -17,6 +22,8 @@ class Dealer implements Black{
         $this->dealerAces = 0;
         $this->dealersTurn = true;
         $this->decksetup = $decksetup;
+        $this->log = new Logger("dealerLogger");
+        $this->log->pushHandler(new StreamHandler(__DIR__."/../logs.log", Level::Info));
     }
 
     public function get_turn(){
@@ -27,11 +34,13 @@ class Dealer implements Black{
         return $this->decksetup->get_deck();
     }
     public function set_cards($card1, $card2){
+        $this->log->info("Cards ". $card1. " " . $card2 ." added to the dealers hand");
         $this->dealersCards = [$card1, $card2];
         return $this->dealersCards;
     }
 
     public function push_card($card){
+        $this->log->info("Card: ". $card . " added to the dealers hand");
         array_push($this->dealersCards, $card);
         return $this->dealersCards;
     }
@@ -114,12 +123,14 @@ class Dealer implements Black{
     public function stand(){
         print "dealer has chosen to stand
         ";
+        $this->log->info("The dealer is standing");
         return $this->dealersTurn = false;
     }
 
     public function bust(){
         print "Dealer has gone bust!
         ";
+        $this->log->info("The dealer is bust");
         return $this->dealersTurn = false;
     }
     public function choice(){
