@@ -1,6 +1,7 @@
 <?php 
 use Game\BlackjackSetup as Setup;
 use Player\Player;
+use Dealer\Dealer;
 describe("Ensures that the cards belonging to the Clubs suit give the player the correct amount of score", function(){
     beforeEach(function(){
         $this->player = new Player(new Setup);
@@ -122,50 +123,110 @@ describe("Ensures that the cards belonging to the Clubs suit give the player the
 })->group("playerClubs");
 
 describe("Ensures that the cards belonging to the Clubs suit give the dealer the correct amount of score", function(){
+    beforeEach(function(){
+        $this->dealer = new Dealer(new Setup);
+    });
     it("ensures that 2 of Clubs adds 2 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Spades", "2 of Hearts");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("2 of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 2);
     });
     it("ensures that 3 of Clubs adds 3 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Clubs", "2 of Diamonds");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("3 of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 3);
     });
     it("ensures that 4 of Clubs adds 4 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Clubs", "2 of Diamonds");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("4 of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 4);
     });
     it("ensures that 5 of Clubs adds 5 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Clubs", "2 of Diamonds");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("5 of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 5);
     });
     it("ensures that 6 of Clubs adds 6 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Clubs", "2 of Diamonds");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("6 of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 6);
     });
     it("ensures that 7 of Clubs adds 7 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Clubs", "2 of Diamonds");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("7 of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 7);
     });
     it("ensures that 8 of Clubs adds 8 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Clubs", "2 of Diamonds");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("8 of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 8);
     });
     it("ensures that 9 of Clubs adds 9 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Clubs", "2 of Diamonds");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("9 of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 9);
     });
     it("ensures that 10 of Clubs adds 10 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Clubs", "2 of Diamonds");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("10 of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 10);
     });
     it("ensures that J of Clubs adds 10 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Clubs", "2 of Diamonds");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("J of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 10);
     });
     it("ensures that Q of Clubs adds 10 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Clubs", "2 of Diamonds");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("Q of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 10);
     });
     it("ensures that K of Clubs adds 10 to the dealers score", function(){
-
+        $this->dealer->set_cards("2 of Clubs", "2 of Diamonds");
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("K of Clubs");
+        expect($this->dealer->get_score())->toEqual($originalScore + 10);
     });
     it("ensures that A of Clubs adds 11 to the dealers score if they have 10 or less and that dealerAces increases by 1", function(){
-
+        $this->dealer->set_cards("2 of Hearts", "2 of Clubs");
+        $dealerStartAces = $this->dealer->get_aces();
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("A of Clubs");
+        $dealerScore = $this->dealer->get_score();
+        $dealerAces = $this->dealer->get_aces();
+        expect($dealerScore)->toEqual($originalScore + 11)
+        ->and($dealerAces)->toEqual($dealerStartAces + 1);
     });
     it("ensures that A of Clubs adds 1 to the dealers score if they have 11 or more and that dealerAces does not change", function(){
-
+        $this->dealer->set_cards("9 of Hearts", "2 of Clubs");
+        $originalScore = $this->dealer->get_score();
+        $dealerStartAces = $this->dealer->get_aces();
+        $this->dealer->push_card("A of Clubs");
+        $dealerScore = $this->dealer->get_score();
+        $dealerAces = $this->dealer->get_aces();
+        expect($dealerScore)->toEqual($originalScore + 1)
+        ->and($dealerAces)->toEqual($dealerStartAces);
     });
     it("ensures that A of Clubs changes its value from 11 to 1 if the dealer takes a card and their score goes above 21 and that dealerAces decreases", function(){
-
+        $this->dealer->set_cards("5 of Hearts", "A of Clubs");
+        $dealerStartAces = $this->dealer->get_aces();
+        $originalScore = $this->dealer->get_score();
+        $this->dealer->push_card("9 of Hearts");
+        $dealerScore = $this->dealer->get_score();
+        $dealerAces = $this->dealer->get_aces();
+        expect($dealerScore)->toEqual($originalScore - 1)
+        ->and($dealerAces)->toEqual($dealerStartAces - 1);
     });
 })->group("dealerClubs");
 ?>
