@@ -150,8 +150,4 @@ class Player implements Black{
         }
     }
 }
-
-$newPlayer = new Player(new Setup);
-$newPlayer->playerTurn();
-
 ?>
