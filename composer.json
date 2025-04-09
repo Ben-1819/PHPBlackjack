@@ -1,0 +1,23 @@
+{
+    "require-dev": {
+        "pestphp/pest": "^3.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Game\\": "game/",
+            "Actions\\": "interface/",
+            "Player\\": "player/",
+            "Dealer\\": "dealer/",
+            "Play\\": "game/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "require": {
+        "monolog/monolog": "^3.9"
+    }
+}
