@@ -2,7 +2,7 @@
 namespace Player;
 use Game\BlackjackSetup as Setup;
 use Actions\Blackjack as Black;
-//require __DIR__."/../vendor/autoload.php";
+require __DIR__."/../vendor/autoload.php";
 class Player implements Black{
     protected $playersCards;
     protected $playerScore;
@@ -50,17 +50,15 @@ class Player implements Black{
     }
 
     public function getHand(){
-        
-
         // Call the get_deck method
-        $deck = $this->decksetup->get_deck();
+        $this->decksetup->get_deck();
 
         // Deal two cards to the player
         $this->playersCards = [$this->decksetup->deal_card(), $this->decksetup->deal_card()];
         // Sort players cards in order from lowest to highest
 
         print_r($this->playersCards);
-        $this->playerScore = self::get_score();
+        /*$this->playerScore = */self::get_score();
         return $this->playersCards;
     }
 
@@ -93,12 +91,10 @@ class Player implements Black{
             }
         }
         // If score is too high and they have aces reduce score
-        while($this->playerScore > 21 && $this->playerAces){
+        while($this->playerScore > 21 && $this->playerAces > 0){
             $this->playerScore -= 10;
             $this->playerAces--;
         }
-        //print $this->playerScore."
-        //";
         return [$this->playerScore, $this->playerAces];
     }
 
@@ -107,45 +103,55 @@ class Player implements Black{
         array_push($this->playersCards, $this->decksetup->deal_card());
         // Recalculate the players score
         $this->playerScore = self::get_score();
-        //print_r($this->playersCards);
-        //print $this->playerScore."
-        //";
-        //$this->playerScore > 21 ? self::stand() : self::choice();
+        print "You got: ".end($this->playersCards).", your new score is $this->playerScore
+        ";
+
         return [$this->playersCards, $this->playerScore];
     }
 
     public function stand(){
-        //print("You have chosen to stand.");
-        //print_r($this->playersCards);
+        print "You have chosen to stand.
+        ";
         $deck = $this->decksetup->get_deck();
-        return $deck;
+        $this->playersTurn = false;
+        return $this->playersTurn;
+    }
+
+    public function bust(){
+        print "You have gone bust!
+        ";
+        $this->playersTurn = false;
+        return $this->playersTurn;
     }
 
     public function choice(){
         $choice = readline("Your cards are: ". implode(", ", $this->playersCards) ." and your score is: ".$this->playerScore. " do you want to hit or stand? ");
-        switch(strtolower($choice)){
-            case "hit":
-                return $choice;
-                //self::hit();
-                //break;
-            case "stand":
-                return $choice;
-                //self::stand();
-                //break;
-            default:
-                print "Please only enter hit or stand.
-                ";
-                self::choice();
-        }
+        return $choice;
     }
     public function playerTurn(){
         self::getHand();
-        $choice = self::choice();
+        while($this->playersTurn != false){
+            if($this->playerScore > 21){
+                self::bust();
+                break;
+            }
+            $choice = self::choice();
+            switch(strtolower($choice)){
+                case "hit":
+                    self::hit();
+                    break;
+                case "stand":
+                    self::stand();
+                    break;
+                default:
+                    print "Please only enter hit or stand.
+                    ";
+            }
+        }
     }
 }
-// Instantiate the Blackjack Setup class
-//$decksetup = new Setup();
+
 $newPlayer = new Player(new Setup);
-$newPlayer->getHand();
-print_r($newPlayer->getdeck());
+$newPlayer->playerTurn();
+
 ?>
