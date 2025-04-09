@@ -73,10 +73,12 @@ class Dealer implements Black{
                     $this->dealerScore += 11;
                     // Add 1 to dealerAces
                     $this->dealerAces++;
+                    break;
                 // Check if the card is a face card
                 case in_array($rank, ["K", "Q", "J"]):
                     // Add 10 to the dealers score
                     $this->dealerScore += 10;
+                    break;
                 // If the card is a normal card
                 default:
                     // Add the rank of the card to the dealers score
