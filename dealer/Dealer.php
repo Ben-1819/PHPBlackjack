@@ -19,6 +19,9 @@ class Dealer implements Black{
         $this->decksetup = $decksetup;
     }
 
+    public function get_deck(){
+        return $this->decksetup->get_deck();
+    }
     public function set_cards($card1, $card2){
         $this->dealersCards = [$card1, $card2];
         return $this->dealersCards;
